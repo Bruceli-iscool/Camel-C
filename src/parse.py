@@ -83,8 +83,10 @@ class Parse:
             else:
                 print("Camel-C: SyntaxError: Expected ';'")
     def store(self):
-        statement = self.statement()
-        self.functions[self.funcName] = statement
+        statement = ""
+        while self.currentToken[0] != "}":
+            self.functions[self.funcName] = statement + statement
+            self.consume()
 
     def exp(self):
         if self.currentToken[0] == "NUMBER":
