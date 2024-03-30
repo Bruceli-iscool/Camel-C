@@ -1,6 +1,6 @@
 import sys
 
-# parser and evaluator for Camel C
+# parser for Camel C
 
 # parse
 class Parse:
@@ -11,8 +11,6 @@ class Parse:
         self.index = -1
         self.consume()
         self.funcName = None
-        # functions
-        self.functions = {}
 
     # helper function
     def consume(self):
@@ -33,17 +31,15 @@ class Parse:
         if self.currentToken[0] == "INT":
             self.consume()
             if self.currentToken[0] == "IDENTIFIER":
-                # if function name is main then execute the statements in it
                 self.funcName = self.currentToken[1]
                 self.consume()
-                if self.currentToken[1] == "main":
-                    if self.currentToken[0] == "OPEN_PAREN":
+                if self.currentToken[0] == "OPEN_PAREN":
                         self.consume()
                         if self.currentToken[0] == "CLOSED_PAREN":
                             self.consume()
                             if self.currentToken[0] == "OPEN_BRACE":
                                 self.consume()
-                                return self.statement()
+                                return [(self.funcName, self.statement())]
                                 if self.currentToken[0] == "CLOSED_BRACE":
                                     self.consume()
                                 else:
@@ -52,48 +48,27 @@ class Parse:
                                 print("Camel-C: SyntaxError: Expected '{'")
                         else:
                             print("Camel-C: SyntaxError: Expected closing ')'")
-                    else:
-                        print("Camel-C: SyntaxError: Expected '('")
                 else:
-                    # else store the function
-                    if self.currentToken[0] == "OPEN_PAREN":
-                        self.consume()
-                        if self.currentToken[0] == "CLOSED_PAREN":
-                            self.consume()
-                            if self.currentToken[0] == "OPEN_BRACE":
-                                self.consume()
-                                self.store()
-                                if sel.currentToken[0] == "CLOSED_BRACE":
-                                    self.consume()
-                                else:
-                                    print("Camel-C: SyntaxError: Missing closing '}'")
-                            else:
-                                print("Camel-C: SyntaxError: Expected '{'")
-                        else:
-                            print("Camel-C: SyntaxError: Expected closing ')'")
-                    else:
-                        print("Camel-C: SyntaxError: Expected '('")
+                    print("Camel-C: SyntaxError: Expected '('")
+                
     def statement(self):
         if self.currentToken[0] == "RETURN":
             self.consume()
             expression = self.exp()
             if self.currentToken[0] == "SEMICOLON":
-                self.advance()
+                self.consume()
                 return expression
             else:
                 print("Camel-C: SyntaxError: Expected ';'")
-    def store(self):
-        statement = ""
-        while self.currentToken[0] != "}":
-            self.functions[self.funcName] = statement + statement
-            self.consume()
-
     def exp(self):
         if self.currentToken[0] == "NUMBER":
-            return self.currentToken[1]
+            exp = self.currentToken[1]
             self.consume()
+            return exp
         else:
             print("Camel-C: Expected integer.")
 
         
-                
+parse = Parse([('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('NUMBER', '5'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')])
+result = parse.parse()
+print(result)
