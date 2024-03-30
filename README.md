@@ -1,2 +1,2 @@
 # Camel-C
-The Camel C programming language
+The Camel C programming language. A interpreted C like language.
