@@ -12,6 +12,8 @@ class Evaluate:
         for funcName, body in self.ast:
             if funcName == 'main':
                 return body
+            elif funcName == 'printf':
+                print(body)
             else:
                 self.functions[funcName] = body
 
