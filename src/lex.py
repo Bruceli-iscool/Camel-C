@@ -43,7 +43,7 @@ class Lex:
                 else:
                     print(f"Camel-C: SyntaxError: Unknown Identifier: {self.source[self.position]}")
                     sys.exit()
-lexer = Lex("int main() {return 5;}")
+lexer = Lex("int main() {printf 5;}")
 result = lexer.lex()
 tokens = list(result)
 print(tokens)

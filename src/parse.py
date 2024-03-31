@@ -60,6 +60,13 @@ class Parse:
                 return expression
             else:
                 print("Camel-C: SyntaxError: Expected ';'")
+        elif self.currentToken[0] == "PRINTF":
+            self.consume()
+            statement = self.exp()
+            if self.currentToken[0] == "SEMICOLON":
+                return ('PRINTF', statement)
+            else:
+                print("Camel-C: SyntaxError: Expected ';'")
     def exp(self):
         if self.currentToken[0] == "NUMBER":
             exp = self.currentToken[1]
@@ -69,6 +76,6 @@ class Parse:
             print("Camel-C: Expected integer.")
 
         
-parse = Parse([('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('RETURN', 'return'), ('NUMBER', '5'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')])
+parse = Parse([('INT', 'int'), ('IDENTIFIER', 'main'), ('OPEN_PAREN', '('), ('CLOSED_PAREN', ')'), ('OPEN_BRACE', '{'), ('IDENTIFIER', 'printf'), ('NUMBER', '5'), ('SEMICOLON', ';'), ('CLOSED_BRACE', '}')])
 result = parse.parse()
 print(result)
