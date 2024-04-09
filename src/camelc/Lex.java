@@ -1,7 +1,8 @@
 package camelc;
 
 import java.util.*;
-
+import java.util.ArrayList;
+import java.util.Arrays.*;
 public class Lex {
     public static void main(String args[]) {
         System.out.println(lex("(){}"));
@@ -9,7 +10,7 @@ public class Lex {
     public static Map<String, String> lex(String input) {
         // tokens map
         Map<String, String> Tokens = new HashMap<String, String>();
-        Map<String, String> TokensInInput = new HashMap<String, String>();
+        ArrayList<String> TokensInInadd = new ArrayList<String>();
         Tokens.put("RPAREN", ")");
         Tokens.put("LPAREN", "(");
         
@@ -18,16 +19,16 @@ public class Lex {
             String z = "";
             switch(c) {
                 case ')':
-                TokensInInput.put("RPAREN", ")");
+                TokensInInadd.add(")");
                 break;
                 case '(':
-                TokensInInput.put("LPAREN", "(");
+                TokensInInadd.add("LPAREN", "(");
                 break;
                 case '{':
-                TokensInInput.put("LBRACE", "{");
+                TokensInInadd.add("LBRACE", "{");
                 break;
                 case '}':
-                TokensInInput.put("RBRACE", "}");
+                TokensInInadd.add("RBRACE", "}");
                 break;
                 default:
                 switch(z) {
@@ -36,7 +37,7 @@ public class Lex {
                 }
             }
         }
-        return TokensInInput;
+        return TokensInInadd;
         // Tokens.containsKey(string)
     }
 }
