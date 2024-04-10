@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Lex {
     // main test method
     public static void main(String[] args) {
-        System.out.println(lex("hi John{}()"));
+        System.out.println(lex("int main()"));
     }
     
     public static ArrayList<String> lex(String input) {
