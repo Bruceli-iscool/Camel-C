@@ -54,13 +54,14 @@ public class Lex {
                     result.add(";");
                     break;
                 case '"':
-                    if (!z.isEmpty() && !ifString == false) {
+                    if (!z.isEmpty() && ifString) {
                         ifString = false;
                         result.add(z);
                         z = "";
                     } else {
                         ifString = true;
                     }
+                    result.add("\"");
                     break;
                 case ' ':
                     if (!z.isEmpty() && ifString == false) {

@@ -51,6 +51,25 @@ public class Parse {
             if (x.matches("(")) {
                 input.remove(0);
                 x = input.get(0);
+                // handle strings
+                if (x.matches("\"")) {
+                    input.remove(0);
+                    x = input.get(0);
+                    String out = x;
+                    input.remove(0);
+                    x = input.get(0)
+                    if (x.matches("\"")) {
+                        input.remove(0);
+                        x = input.get(0);
+                        if (x.matches(")")) {
+                            input.remove(0);
+                            x = input.get(0);
+                            if (x.matches(";")) {
+                                System.out.print(out);
+                            }
+                        }
+                    }
+                }
             }
         }
         return input;
