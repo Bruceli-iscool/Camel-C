@@ -11,7 +11,7 @@ public class Parse {
         // parse and execute
         // recursive parsing
         String current = input.get(0);
-        if (current.matches("int")) {
+        if (current.matches("void")) {
             input.remove(0);
             current = input.get(0);
             // if main function execute code
@@ -27,7 +27,7 @@ public class Parse {
                         if (current.matches("\\{")) {
                             input.remove(0);
                             current = input.get(0);
-                            statements(input);
+                            input = statements(input, current);
                         }
                     } else {
                         System.err.println("Camel-C: Expected closing ')'.");
@@ -41,7 +41,18 @@ public class Parse {
         }
 
     }
-    private static void statements(ArrayList<String> input) {
+    private static ArrayList<String> statements(ArrayList<String> input, String x) {
         // handle statements
+        int std = 1;
+        // standard output
+        if (x.matches("printf") && std == 1) {
+            input.remove(0);
+            x = input.get(0);
+            if (x.matches("(")) {
+                input.remove(0);
+                x = input.get(0);
+            }
+        }
+        return input;
     }
 }
