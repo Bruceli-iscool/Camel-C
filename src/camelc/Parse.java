@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class Parse {
     public static void main(String[] args) {
-        ArrayList<String> tokens = Lex.lex("int main()");
+        ArrayList<String> tokens = Lex.lex("int main() { printf(\"Hello\");");
+        System.out.println(tokens);
         parse(tokens);
     }
     public static void parse(ArrayList<String> input) {
@@ -43,9 +44,8 @@ public class Parse {
     }
     private static ArrayList<String> statements(ArrayList<String> input, String x) {
         // handle statements
-        int std = 1;
         // standard output
-        if (x.matches("printf") && std == 1) {
+        if (x.matches("printf")) {
             input.remove(0);
             x = input.get(0);
             if (x.matches("(")) {
@@ -57,7 +57,7 @@ public class Parse {
                     x = input.get(0);
                     String out = x;
                     input.remove(0);
-                    x = input.get(0)
+                    x = input.get(0);
                     if (x.matches("\"")) {
                         input.remove(0);
                         x = input.get(0);
@@ -66,12 +66,17 @@ public class Parse {
                             x = input.get(0);
                             if (x.matches(";")) {
                                 System.out.print(out);
+                                input.remove(0);
+                            } else {
+                                System.out.println("Camel-C: Expected ';'");
                             }
+                        } else {
+                            System.out.println("Camel-C: Expected ')'");
                         }
                     }
                 }
             }
-        }
+        } 
         return input;
     }
 }
