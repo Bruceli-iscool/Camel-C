@@ -1,7 +1,6 @@
 package camelc;
 
 import java.util.ArrayList;
-import camelc.Lex;
 
 public class Parse {
     public static void main(String[] args) {
@@ -19,15 +18,30 @@ public class Parse {
             if (current.matches("main")) {
                 input.remove(0);
                 current = input.get(0);
-                if (current.matches("(")) {
+                if (current.matches("\\(")) {
                     input.remove(0);
                     current = input.get(0);
-                    System.out.println("hi");
+                    if (current.matches("\\)")) {
+                        input.remove(0);
+                        current = input.get(0);
+                        if (current.matches("\\{")) {
+                            input.remove(0);
+                            current = input.get(0);
+                            statements(input);
+                        }
+                    } else {
+                        System.err.println("Camel-C: Expected closing ')'.");
+                    }
+                } else {
+                    System.err.println("Camel-C: Expected '('");
                 }
-            } else if (current.matches("[a-zA-Z_][a-zA-Z0-9_]*")&& current != "main") {
+            } else if (current.matches("[a-zA-Z_][a-zA-Z0-9_]*")&& !current.matches("main")) {
                 // handle function definitions
             }
         }
 
+    }
+    private static void statements(ArrayList<String> input) {
+        // handle statements
     }
 }
