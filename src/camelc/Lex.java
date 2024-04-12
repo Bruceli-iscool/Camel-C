@@ -67,7 +67,7 @@ public class Lex {
                     if (!z.isEmpty() && ifString == false) {
                         result.add(z);
                         z = "";
-                    } else {
+                    } else if (ifString) {
                         z += c;
                     }
                     break;
