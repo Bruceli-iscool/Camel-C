@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class Parse {
     public static void main(String[] args) {
         ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\"); }");
-        System.out.print(tokens);
         parse(tokens);
     }
     public static void parse(ArrayList<String> input) {
