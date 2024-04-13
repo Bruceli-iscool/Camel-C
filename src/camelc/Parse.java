@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Parse {
     public static void main(String[] args) {
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\"); }");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\"); printf(\"Hello\"); }");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input) {
@@ -50,44 +50,48 @@ public class Parse {
     private static ArrayList<String> statements(ArrayList<String> input, String x) {
         // handle statements
         // standard output
-        if (x.matches("printf")) {
-            input.remove(0);
-            x = input.get(0);
-            if (x.matches("\\(")) {
+        while (true) {
+            if (x.matches("printf")) {
                 input.remove(0);
                 x = input.get(0);
-                // handle strings
-                if (x.matches("\"")) {
+                if (x.matches("\\(")) {
                     input.remove(0);
                     x = input.get(0);
-                    String out = x;
-                    input.remove(0);
-                    x = input.get(0);
+                    // handle strings
                     if (x.matches("\"")) {
                         input.remove(0);
                         x = input.get(0);
-                        if (x.matches("\\)")) {
+                        String out = x;
+                        input.remove(0);
+                        x = input.get(0);
+                        if (x.matches("\"")) {
                             input.remove(0);
                             x = input.get(0);
-                            if (x.matches("\\;")) {
-                                System.out.print(out);
+                            if (x.matches("\\)")) {
                                 input.remove(0);
+                                x = input.get(0);
+                                if (x.matches("\\;")) {
+                                    System.out.print(out);
+                                    input.remove(0);
+                                    x = input.get(0);
+                                    continue;
+                                } else {
+                                    System.err.println("Camel-C: Expected ';'");
+                                }
                             } else {
-                                System.err.println("Camel-C: Expected ';'");
+                                System.err.println("Camel-C: Expected ')'");
                             }
                         } else {
-                            System.err.println("Camel-C: Expected ')'");
+                            System.err.println("Camel-C: Expected '\"'");
                         }
-                    } else {
-                        System.err.println("Camel-C: Expected '\"'");
                     }
+                } else {
+                    System.err.println("Camel-C: Expected '('");
                 }
             } else {
-                System.err.println("Camel-C: Expected '('");
-            }
-        } else {
-            System.err.println("Camel-C: ");
-        } 
+                break;
+            } 
+        }
         return input;
     }
 }
