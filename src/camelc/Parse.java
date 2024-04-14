@@ -19,7 +19,7 @@ public class Parse {
                 input.remove(0);
                 current = input.get(0);
                 if (current.matches("\\(")) {
-                    input.remove(0);
+                    input.remove(0); 
                     current = input.get(0);
                     if (current.matches("\\)")) {
                         input.remove(0);
