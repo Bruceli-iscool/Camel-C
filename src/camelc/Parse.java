@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Parse {
     public static Map<String, Integer> ints = new HashMap<String, Integer>();
     public static void main(String[] args) {
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\"); printf(\"Hello\"); }");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\"); }");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input) {
@@ -81,16 +81,20 @@ public class Parse {
                                     continue;
                                 } else {
                                     System.err.println("Camel-C: Expected ';'");
+                                    break;
                                 }
                             } else {
                                 System.err.println("Camel-C: Expected ')'");
+                                break;
                             }
                         } else {
                             System.err.println("Camel-C: Expected '\"'");
+                            break;
                         }
                     }
                 } else {
                     System.err.println("Camel-C: Expected '('");
+                    break;
                 }
             } else if (x.matches("int")){
 
