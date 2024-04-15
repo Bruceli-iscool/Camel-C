@@ -1,8 +1,12 @@
 package camelc;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
+
 
 public class Parse {
+    public static Map<String, Integer> ints = new HashMap<String, Integer>();
     public static void main(String[] args) {
         ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\"); printf(\"Hello\"); }");
         parse(tokens);
@@ -88,6 +92,8 @@ public class Parse {
                 } else {
                     System.err.println("Camel-C: Expected '('");
                 }
+            } else if (x.matches("int")){
+
             } else {
                 break;
             } 
