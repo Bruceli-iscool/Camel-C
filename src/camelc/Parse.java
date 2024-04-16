@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class Parse {
     public static Map<String, Integer> ints = new HashMap<String, Integer>();
     public static void main(String[] args) {
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\"); int hi = 5 }");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5; }");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input) {
@@ -106,25 +106,19 @@ public class Parse {
                     x = input.get(0);
                     if (x.matches("=")) {
                         input.remove(0);
+                        x = input.get(0);                       
+                        int num = Integer.parseInt(x);
+                        ints.put(name, num);
+                        input.remove(0);
                         x = input.get(0);
-                        if (x.matches("^\\d+$")) {
-                            // if type is int
-                            int num = Integer.parseInt(x);
-                            ints.put(name, num);
+                        if (x.matches(";")) {
                             input.remove(0);
                             x = input.get(0);
-                            if (x.matches(";")) {
-                                input.remove(0);
-                                x = input.get(0);
-                                continue;
-                            } else {
-                                System.err.println("\nCamel-C: Expected a ';'");
-                                break;
-                            }
+                            continue;
                         } else {
-                            System.err.println("\nCamel-C: Expected Integer");
+                            System.err.println("\nCamel-C: Expected a ';'");
                             break;
-                        }
+                            }
                     } else {
                         System.err.println("\nCamel-C: Expected '='");
                         break;

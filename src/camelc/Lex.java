@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Lex {
     // main test method
     public static void main(String[] args) {
-        System.out.println(lex("\"int   \" main()"));
+        System.out.println(lex("\"int   \" main() {int y=5}"));
     }
     
     public static ArrayList<String> lex(String input) {
@@ -52,6 +52,13 @@ public class Lex {
                         z = "";
                     }
                     result.add(";");
+                    break;
+                case '=':
+                    if (!z.isEmpty()) {
+                        result.add(z);
+                        z = "";
+                    }
+                    result.add("=");
                     break;
                 case '"':
                     if (!z.isEmpty() && ifString) {
