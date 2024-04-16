@@ -37,13 +37,13 @@ public class Parse {
                                 input.remove(0);
                             }
                         } else {
-                            System.err.println("Camel-C: Expected '{'");
+                            System.err.println("\nCamel-C: Expected '{'");
                         }
                     } else {
-                        System.err.println("Camel-C: Expected closing ')'.");
+                        System.err.println("\nCamel-C: Expected closing ')'.");
                     }
                 } else {
-                    System.err.println("Camel-C: Expected '('");
+                    System.err.println("\nCamel-C: Expected '('");
                 }
             } else if (current.matches("[a-zA-Z_][a-zA-Z0-9_]*")&& !current.matches("main")) {
                 // handle function definitions
@@ -80,15 +80,15 @@ public class Parse {
                                     x = input.get(0);
                                     continue;
                                 } else {
-                                    System.err.println("Camel-C: Expected ';'");
+                                    System.err.println("\nCamel-C: Expected ';'");
                                     break;
                                 }
                             } else {
-                                System.err.println("Camel-C: Expected ')'");
+                                System.err.println("\nCamel-C: Expected ')'");
                                 break;
                             }
                         } else {
-                            System.err.println("Camel-C: Expected '\"'");
+                            System.err.println("\nCamel-C: Expected '\"'");
                             break;
                         }
                     }
