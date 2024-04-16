@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 
-
 public class Parse {
     public static Map<String, Integer> ints = new HashMap<String, Integer>();
-    public static void main(String[] args) {
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5; }");
+    public static void main(String[] args){
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5+5; }");
         parse(tokens);
     }
-    public static void parse(ArrayList<String> input) {
+    public static void parse(ArrayList<String> input){
         // parse and execute
         // recursive parsing
         String current = input.get(0);
@@ -51,7 +50,7 @@ public class Parse {
         }
 
     }
-    private static ArrayList<String> statements(ArrayList<String> input, String x) {
+    private static ArrayList<String> statements(ArrayList<String> input, String x){
         // handle statements
         // standard output
         while (true) {
@@ -106,7 +105,7 @@ public class Parse {
                     x = input.get(0);
                     if (x.matches("=")) {
                         input.remove(0);
-                        x = input.get(0);                       
+                        x = input.get(0);          
                         int num = Integer.parseInt(x);
                         ints.put(name, num);
                         input.remove(0);
@@ -133,4 +132,6 @@ public class Parse {
         }
         return input;
     }
+
+
 }
