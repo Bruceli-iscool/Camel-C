@@ -1,6 +1,5 @@
 package dev.camel;
 
-import dev.camel.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class Parse {
     } public static Integer eval(String exp) {
         // evaluate an expression 
         Expression expression = new ExpressionBuilder(exp).build();
-        Integer result = expression.evaluate();
+        Integer result = (int) expression.evaluate();
         return result;
     }
     private static ArrayList<String> statements(ArrayList<String> input, String x){
@@ -101,6 +100,8 @@ public class Parse {
                     } else {
                         if (x.matches("^\\d+$")) {
                             System.out.println(x);
+                        } else {
+                            System.err.println("Camel-C: Unknown type.");
                         }
                     }
                 } else {
