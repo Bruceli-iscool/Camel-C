@@ -1,5 +1,6 @@
 package dev.camel;
 
+import dev.camel.*;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -53,9 +54,9 @@ public class Parse {
 
     } public static Integer eval(String exp) {
         // evaluate an expression 
-        Expression expression = new ExpressionBuilder("3+2").build();
+        Expression expression = new ExpressionBuilder(exp).build();
         Integer result = expression.evaluate();
-    
+        return result;
     }
     private static ArrayList<String> statements(ArrayList<String> input, String x){
         // handle statements
@@ -117,23 +118,18 @@ public class Parse {
                     if (x.matches("=")) {
                         input.remove(0);
                         x = input.get(0);    
-                        if (x.matches("^\\d+$")) {      
-                            int num = Integer.parseInt(x);
-                            ints.put(name, num);
+                        int num = eval(x);
+                        ints.put(name, num);
+                        input.remove(0);
+                        x = input.get(0);
+                        if (x.matches(";")) {
                             input.remove(0);
                             x = input.get(0);
-                            if (x.matches(";")) {
-                                input.remove(0);
-                                x = input.get(0);
-                                continue;
-                            } else {
-                                System.err.println("\nCamel-C: Expected a ';'");
-                                break;
-                                }
+                            continue;
                         } else {
-                            System.err.println("Camel-C: Expected Integer.");
+                            System.err.println("\nCamel-C: Expected a ';'");
                             break;
-                        }   
+                        }
                     } else {
                         System.err.println("\nCamel-C: Expected '='");
                         break;
