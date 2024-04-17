@@ -3,6 +3,8 @@ package camelc;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class Parse {
     public static Map<String, Integer> ints = new HashMap<String, Integer>();
@@ -49,6 +51,11 @@ public class Parse {
             }
         }
 
+    } public static Integer eval(String exp) {
+        // evaluate an expression 
+        Expression expression = new ExpressionBuilder("3+2").build();
+        Integer result = expression.evaluate();
+    
     }
     private static ArrayList<String> statements(ArrayList<String> input, String x){
         // handle statements
@@ -90,6 +97,10 @@ public class Parse {
                             System.err.println("\nCamel-C: Expected '\"'");
                             break;
                         }
+                    } else {
+                        if (x.matches("^\\d+$")) {
+                            System.out.println(x);
+                        }
                     }
                 } else {
                     System.err.println("\nCamel-C: Expected '('");
@@ -105,19 +116,24 @@ public class Parse {
                     x = input.get(0);
                     if (x.matches("=")) {
                         input.remove(0);
-                        x = input.get(0);          
-                        int num = Integer.parseInt(x);
-                        ints.put(name, num);
-                        input.remove(0);
-                        x = input.get(0);
-                        if (x.matches(";")) {
+                        x = input.get(0);    
+                        if (x.matches("^\\d+$")) {      
+                            int num = Integer.parseInt(x);
+                            ints.put(name, num);
                             input.remove(0);
                             x = input.get(0);
-                            continue;
+                            if (x.matches(";")) {
+                                input.remove(0);
+                                x = input.get(0);
+                                continue;
+                            } else {
+                                System.err.println("\nCamel-C: Expected a ';'");
+                                break;
+                                }
                         } else {
-                            System.err.println("\nCamel-C: Expected a ';'");
+                            System.err.println("Camel-C: Expected Integer.");
                             break;
-                            }
+                        }   
                     } else {
                         System.err.println("\nCamel-C: Expected '='");
                         break;
