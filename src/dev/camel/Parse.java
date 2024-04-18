@@ -9,7 +9,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 public class Parse {
     public static Map<String, Integer> ints = new HashMap<String, Integer>();
     public static void main(String[] args){
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5+5; }");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5+5; printf(hi);}");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input){
@@ -57,6 +57,21 @@ public class Parse {
         Integer result = (int) expression.evaluate();
         return result;
     }
+    public static String replaceVarsInt(String input, Map<String, Integer> replacements) {
+        // replace variables
+        StringBuilder output = new StringBuilder(input);
+        for (Map.Entry<String, Integer> entry : replacements.entrySet()) {
+            String key = entry.getKey();
+            Integer value = entry.getValue();
+            String keyStr = key + ""; // Convert key to string
+            int index = output.indexOf(keyStr);
+            while (index != -1) {
+                output.replace(index, index + keyStr.length(), value.toString());
+                index = output.indexOf(keyStr, index + value.toString().length());
+            }
+        }
+        return output.toString();
+    }
     private static ArrayList<String> statements(ArrayList<String> input, String x){
         // handle statements
         // standard output
@@ -97,13 +112,48 @@ public class Parse {
                             System.err.println("\nCamel-C: Expected '\"'");
                             break;
                         }
-                    } else {
-                        if (x.matches("^\\d+$")) {
-                            System.out.println(x);
+                    } else if (x.matches("^\\d+$")) {
+                        System.out.println(eval(x));
+                        input.remove(0);
+                        x = input.get(0);
+                        if (x.matches("\\)")) {
+                            input.remove(0);
+                            x = input.get(0);
+                            if (x.matches("\\;")) {
+                                input.remove(0);
+                                x = input.get(0);
+                                continue;
+                            } else {
+                                System.err.println("\nCamel-C: Expected ';'");
+                                break;
+                            }
                         } else {
-                            System.err.println("Camel-C: Unknown type.");
+                            System.err.println("\nCamel-C: Expected ')'");
+                            break;
+                        }
+                    } else if (x.matches("[a-zA-Z_][a-zA-Z0-9_]*")){
+                        String output = replaceVarsInt(x, ints);
+                        System.out.println(output);
+                        input.remove(0);
+                        x = input.get(0);
+                        if (x.matches("\\)")) {
+                            input.remove(0);
+                            x = input.get(0);
+                            if (x.matches("\\;")) {
+
+                                input.remove(0);
+                                x = input.get(0);
+                                continue;
+                            } else {
+                                System.err.println("\nCamel-C: Expected ';'");
+                                break;
+                            }
+                        } else {
+                            System.err.println("\nCamel-C: Expected ')'");
+                            break;
                         }
                     }
+                    
                 } else {
                     System.err.println("\nCamel-C: Expected '('");
                     break;
