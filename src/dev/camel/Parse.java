@@ -1,5 +1,3 @@
-package dev.camel;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
@@ -9,7 +7,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 public class Parse {
     public static Map<String, Long> ints = new HashMap<String, Long>();
     public static void main(String[] args){
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5+5*23; printf(hi);}");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(5); int hi = 5+5*23; printf(hi);}");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input){
