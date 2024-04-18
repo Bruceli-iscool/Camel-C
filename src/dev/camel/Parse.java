@@ -6,6 +6,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class Parse {
     public static Map<String, Long> ints = new HashMap<String, Long>();
+    public static Map<String, String> voidFunc = new HashMap<String, String>();
     public static void main(String[] args){
         ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(5); int hi = 5+5*23; printf(hi);}");
         parse(tokens);
@@ -46,6 +47,38 @@ public class Parse {
                 }
             } else if (current.matches("[a-zA-Z_][a-zA-Z0-9_]*")&& !current.matches("main")) {
                 // handle function definitions
+                if (current.matches("\\(")) {
+                    input.remove(0); 
+                    current = input.get(0);
+                    if (current.matches("\\)")) {
+                        input.remove(0);
+                        current = input.get(0);
+                        if (current.matches("\\{")) {
+                            input.remove(0);
+                            current = input.get(0);
+                            int stack = 1;
+                            String to_add = "";
+                            while (stack > 0) {
+                                if (current.matches("{")) {
+                                    stack += 1;
+                                    to_add = current;
+                                    input.remove(0);
+                                    current = input.get(0);
+                                } else if (current.matches("}")) {
+                                    stack -= 1;
+                                    to_add = current;
+                                    input.remove(0);
+                                    current = input.get(0);
+                                } else {
+                                    to_add = current;
+                                    input.remove(0);
+                                    current = input.get(0);
+                                    
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
 
