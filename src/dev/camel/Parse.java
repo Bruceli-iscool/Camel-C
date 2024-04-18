@@ -6,6 +6,7 @@ import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class Parse {
     public static Map<String, Long> ints = new HashMap<String, Long>();
+    public static Map<String, String> strings = new HashMap<String, String>();
     public static Map<String, ArrayList<String>> voidFunc = new HashMap<String, ArrayList<String>>();
     public static void main(String[] args){
         ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(5); int hi = 5+5*23; printf(hi);}");
