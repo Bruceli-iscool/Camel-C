@@ -7,9 +7,9 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 
 public class Parse {
-    public static Map<String, Integer> ints = new HashMap<String, Integer>();
+    public static Map<String, Long> ints = new HashMap<String, Long>();
     public static void main(String[] args){
-        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5+5; printf(hi);}");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(\"Hello\n\"); int hi = 5+5*23; printf(hi);}");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input){
@@ -51,18 +51,18 @@ public class Parse {
             }
         }
 
-    } public static Integer eval(String exp) {
+    } public static Long eval(String exp) {
         // evaluate an expression 
         Expression expression = new ExpressionBuilder(exp).build();
-        Integer result = (int) expression.evaluate();
+        long result = (long) expression.evaluate();
         return result;
     }
-    public static String replaceVarsInt(String input, Map<String, Integer> replacements) {
+    public static String replaceVarsInt(String input, Map<String, Long> replacements) {
         // replace variables
         StringBuilder output = new StringBuilder(input);
-        for (Map.Entry<String, Integer> entry : replacements.entrySet()) {
+        for (Map.Entry<String, Long> entry : replacements.entrySet()) {
             String key = entry.getKey();
-            Integer value = entry.getValue();
+            Long value = entry.getValue();
             String keyStr = key + ""; // Convert key to string
             int index = output.indexOf(keyStr);
             while (index != -1) {
@@ -169,7 +169,7 @@ public class Parse {
                     if (x.matches("=")) {
                         input.remove(0);
                         x = input.get(0);    
-                        int num = eval(x);
+                        long num = eval(x);
                         ints.put(name, num);
                         input.remove(0);
                         x = input.get(0);
