@@ -77,8 +77,8 @@ public class Parse {
         // standard output
         while (true) {
             if (x.matches("printf")) {
-                input.remove(0);
-                x = input.get(0);
+                input.remove(0);   
+                x = input.get(0);     
                 if (x.matches("\\(")) {
                     input.remove(0);
                     x = input.get(0);
