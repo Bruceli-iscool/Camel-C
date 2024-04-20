@@ -121,6 +121,10 @@ public class Parse {
         }
         return output.toString();
     }
+    public static ArrayList<String> args(ArrayList<String> args, ArrayList<String> tokens) {
+        ArrayList<String> result = new ArrayList<String>();
+        return result;
+    }
     private static ArrayList<String> statements(ArrayList<String> input, String x){
         // handle statements
         // standard output
