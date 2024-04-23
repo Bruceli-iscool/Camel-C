@@ -120,7 +120,7 @@ public class Parse {
         }
         return output.toString();
     }
-    public static ArrayList<String> args(ArrayList<String> args, ArrayList<String> tokens) {
+    public static ArrayList<String> args(ArrayList<String> args, ArrayList<String> tokens, ArrayList<String> originalArgs) {
         // use .replace
         // pseudocode
         /*
