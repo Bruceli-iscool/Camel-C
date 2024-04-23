@@ -1,4 +1,4 @@
-package dev.camel;
+//package dev.camel;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -122,6 +122,12 @@ public class Parse {
     }
     public static ArrayList<String> args(ArrayList<String> args, ArrayList<String> tokens) {
         // use .replace
+        // pseudocode
+        /*
+        for item in args that is in tokens of the function:
+            replace all args that in tokens with new args
+        break
+         */
         return tokens;
     }
     private static ArrayList<String> statements(ArrayList<String> input, String x){
