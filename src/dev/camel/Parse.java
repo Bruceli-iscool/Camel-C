@@ -1,4 +1,4 @@
-package dev.camel;
+//package dev.camel;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -17,87 +17,98 @@ public class Parse {
     public static void parse(ArrayList<String> input){
         // parse and execute
         // recursive parsing
-        String current = input.get(0);
-            if (current.matches("void")) {
-                input.remove(0);
-                current = input.get(0);
-                // if main function execute code
-                if (current.matches("main")) {
+        while (!input.isEmpty()) {
+                String current = input.get(0);
+                if (current.matches("void")) {
                     input.remove(0);
                     current = input.get(0);
-                    if (current.matches("\\(")) {
-                        input.remove(0); 
+                    // if main function execute code
+                    if (current.matches("main")) {
+                        input.remove(0);
                         current = input.get(0);
-                        if (current.matches("\\)")) {
-                            input.remove(0);
+                        if (current.matches("\\(")) {
+                            input.remove(0); 
                             current = input.get(0);
-                            if (current.matches("\\{")) {
+                            if (current.matches("\\)")) {
                                 input.remove(0);
                                 current = input.get(0);
-                                input = statements(input, current);
-                                current = input.get(0);
-                                if (current.matches("}")) {
+                                if (current.matches("\\{")) {
                                     input.remove(0);
+                                    current = input.get(0);
+                                    input = statements(input, current);
+                                    current = input.get(0);
+                                    if (current.matches("}")) {
+                                        input.remove(0);
+                                        continue;
+                                    }
+                                } else {
+                                    System.err.println("\nCamel-C: Expected '{'");
+                                    break;
                                 }
                             } else {
-                                System.err.println("\nCamel-C: Expected '{'");
+                                System.err.println("\nCamel-C: Expected closing ')'.");
+                                break;
                             }
                         } else {
-                            System.err.println("\nCamel-C: Expected closing ')'.");
+                            System.err.println("\nCamel-C: Expected '('");
+                            break;
                         }
-                    } else {
-                        System.err.println("\nCamel-C: Expected '('");
-                    }
-                } else if (current.matches("[a-zA-Z_][a-zA-Z0-9_]*")&& !current.matches("main")) {
-                    // handle function definitions
-                    String name = current;
-                    if (current.matches("\\(")) {
-                        input.remove(0); 
-                        current = input.get(0);
-                        ArrayList<String> add_to = new ArrayList<String>();
-                        while (!current.matches(")")) {
-                            add_to.add(current);
-                            input.remove(0);
+                    } else if (current.matches("[a-zA-Z_][a-zA-Z0-9_]*")&& !current.matches("main")) {
+                        // handle function definitions
+
+                        String name = current;
+                        if (current.matches("\\(")) {
+                            input.remove(0); 
                             current = input.get(0);
-                        }
-                        if (current.matches("\\)")) {
-                            input.remove(0);
-                            current = input.get(0);
-                            if (current.matches("\\{")) {
+                            ArrayList<String> add_to = new ArrayList<String>();
+                            while (!current.matches(")")) {
+                                add_to.add(current);
                                 input.remove(0);
                                 current = input.get(0);
-                                int stack = 1;
-                                String to_add = "";
-                                ArrayList<String> body = new ArrayList<String>();
-                                while (stack > 0) {
-                                    if (current.matches("{")) {
-                                        stack += 1;
-                                        to_add = current;
-                                        input.remove(0);
-                                        current = input.get(0);
-                                    } else if (current.matches("}")&& stack > 1) {
-                                        stack -= 1;
-                                        to_add = current;
-                                        input.remove(0);
-                                        current = input.get(0);
-                                    } else if (current.matches("}")&& stack < 2) {
-                                        HashMap<ArrayList<String>, ArrayList<String>> total = new HashMap<ArrayList<String>, ArrayList<String>>();
-                                        total.put(add_to, body);
-                                        voidFunc.put(name, total);
-                                        stack -= 1;
-                                        break;
-                                    } else {
-                                        to_add = current;
-                                        input.remove(0);
-                                        current = input.get(0);
+                            }
+                            if (current.matches("\\)")) {
+                                input.remove(0);
+                                current = input.get(0);
+                                if (current.matches("\\{")) {
+                                    input.remove(0);
+                                    current = input.get(0);
+                                    int stack = 1;
+                                    String to_add = "";
+                                    ArrayList<String> body = new ArrayList<String>();
+                                    while (stack > 0) {
+                                        if (current.matches("{")) {
+                                            stack += 1;
+                                            to_add += current;
+                                            input.remove(0);
+                                            current = input.get(0);
+                                        } else if (current.matches("}")&& stack > 1) {
+                                            stack -= 1;
+                                            to_add += current;
+                                            input.remove(0);
+                                            current = input.get(0);
+                                        } else if (current.matches("}")&& stack < 2) {
+                                            HashMap<ArrayList<String>, ArrayList<String>> total = new HashMap<ArrayList<String>, ArrayList<String>>();
+                                            total.put(add_to, body);
+                                            voidFunc.put(name, total);
+                                            stack -= 1;
+                                            break;
+                                        } else {
+                                            to_add = current;
+                                            input.remove(0);
+                                            current = input.get(0);
+                                        }
+                                        body.add(to_add);
                                     }
-                                    body.add(to_add);
+                                    continue;
                                 }
                             }
                         }
-                    }
+                    } else {
+                    System.err.println("Camel-C: Unknown token " + input.get(0));
+                    break;
                 }
-            }
+        }
+    }
 
     } public static Long eval(String exp) {
         // evaluate an expression 
