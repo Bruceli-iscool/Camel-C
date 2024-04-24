@@ -121,6 +121,7 @@ public class Parse {
         return output.toString();
     }
     public static ArrayList<String> args(ArrayList<String> args, ArrayList<String> tokens, ArrayList<String> originalArgs) {
+        // handle arguments
         ArrayList<String> updatedTokens = new ArrayList<>(tokens);
         for (int i = 0; i < originalArgs.size(); i++) {
             String originalArg = originalArgs.get(i);
