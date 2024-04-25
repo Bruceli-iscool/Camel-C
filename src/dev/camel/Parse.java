@@ -11,7 +11,7 @@ public class Parse {
     public static Map<String, String> strings = new HashMap<String, String>();
     public static HashMap<String, HashMap<ArrayList<String>, ArrayList<String>>> voidFunc = new HashMap<String, HashMap<ArrayList<String>, ArrayList<String>>>();
     public static void main(String[] args){
-        ArrayList<String> tokens = Lex.lex("void john(args) {printf(args)} void main() { printf(\"Hello\n\"); printf(5); int hi = 5+5*23; printf(hi);}");
+        ArrayList<String> tokens = Lex.lex("void main() { printf(\"Hello\n\"); printf(5); int hi = 5+5*23; printf(hi);}");
         parse(tokens);
     }
     public static void parse(ArrayList<String> input){
@@ -41,8 +41,8 @@ public class Parse {
                                         try {
                                             input.remove(0);
                                             current = input.get(0);
-                                        } catch (IndexOutOfBoundsException) {
-                                            
+                                        } catch (Exception e) {
+                                            break;
                                         }
                                         continue;
                                     } else {

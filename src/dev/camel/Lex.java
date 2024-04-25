@@ -60,13 +60,6 @@ public class Lex {
                     }
                     result.add("=");
                     break;
-                case ',':
-                    if (!z.isEmpty()) {
-                        result.add(z);
-                        z = "";
-                    }
-                    result.add(",");
-                    break;
                 case '"':
                     if (!z.isEmpty() && ifString) {
                         ifString = false;
